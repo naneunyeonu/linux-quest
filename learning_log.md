@@ -4,3 +4,6 @@
 ２。user.nameとuser.emailの設定ができることを新しく知りました。
 
 ３。terminalに日本語を書くためにはLANG Environment Variableの設定が必要です。
+
+
+ステップ５追加
