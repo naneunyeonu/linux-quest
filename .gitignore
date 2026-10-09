@@ -1,0 +1,10 @@
+# ステップ５
+
+### Directory ###
+/tmp
+
+### File Extension ###
+*.log
+
+### File ###
+secret.txt
