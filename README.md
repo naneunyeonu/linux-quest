@@ -13,3 +13,7 @@ Gitを練習中
 
 ## 研修のゴール
 - Git、Linuxなどの技術を気軽に使えるようになることです。
+
+
+## 参考リンク
+- https://github.com/education?locale=ko-kr
