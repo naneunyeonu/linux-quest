@@ -6,7 +6,7 @@ ls -al
 
 find ./ -name "map.txt"
 
-find ./ -name "*.txt" \ xargs grep "TREASURE"
+find ./ -name "*.txt" | xargs grep "TREASURE"
 
 # サイズが大きいファイルを探す。
 ls -l
@@ -22,6 +22,9 @@ base64 --decode test.sh
 
 ## ステップ２
 ```bash
+mkdir ~/treasure_hunt/home
+vi ~/treasure_hunt/home/diary.txt
+
 cp open.sh ~/treasure_hunt/home/my_treasure.sh
 
 ln -s my_treasure.sh ./treasure_link.sh
@@ -37,13 +40,16 @@ ls -R
 
 ## ステップ３
 ### 質問１：OS とは何ですか。また Linux とは何ですか
-- OSはハードウェアとアフリケーション間の相互作用を管理、制御するソフトウェアです。
+- OSはハードウェアとアプリケーション」間の相互作用を管理、制御するソフトウェアです。
+- LinuxはOS種類の一つです。UNIXから影響をもらって開発されました。
 
 ### 質問２：Linux におけるカーネルとディストリビューションとは何ですか。あなたが今使っている Linux のディストリビューションは何ですか（調べ方もあわせて答えてください）
 - カーネルはハードウェアとソフトウェアを繋ぐ役割をします。またハードウェアのリソースを管理する役割をします。
 - ユーザーが直接使用することは難しいです。
 - 今使っているLinuxのディストリビューションは以下のコマンドで確認ができます。
-Ubuntuを使っています。
+
+- ディストリビューションはLinuxカーネルを基づいて、いろんな道具を追加してユーザーがすぐ使用できるように完成させたOSです。
+- 以下のコマンドを通じて今使用しているディストリビューションが確認できます。
 > cat /etc/os-release
 ---
 ![ステップ３](images/3-1.png)
