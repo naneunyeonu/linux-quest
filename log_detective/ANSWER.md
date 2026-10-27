@@ -15,8 +15,8 @@ tail -5 access.log
 awk '$9 == 500 {print $9}' access.log | wc -l
 awk '$9 == 500 {print $7}' access.log | uniq
 
-awk '$9 == 500 {print $4}' access.log | sort | head -n -1
-awk '$9 == 500 {print $4}' access.log | sort | tail -n -1
+awk '$9 == 500 {print $4}' access.log | sort | head -n 1
+awk '$9 == 500 {print $4}' access.log | sort | tail -n 1
 ```
 
 
@@ -39,6 +39,7 @@ awk '$1 == "203.0.113.66" && $9 != 401 {print $0}' access.log
 ![ステップ３](images/3-2.png)
 ![ステップ３](images/3-3.png)
 ![ステップ３](images/3-4.png)
+![ステップ４](images/log_detective_review1.png)
 
 ### 質問３−５：この IP アドレスは何をしていたと考えられますか。また、攻撃は成功したと思いますか。理由とともに答えてください
 - 管理者にアクセスするとしました。アクセスに成功しましたので、攻撃はで成功です。
@@ -46,6 +47,8 @@ awk '$1 == "203.0.113.66" && $9 != 401 {print $0}' access.log
 ## ステップ４
 ```bash
 awk '$9 == 404 {print $7}' access.log | uniq -c
+# sorの追加
+awk '$9 == 404 {print $7}' access.log | sort | uniq -c
 
 grep "/.git/config" access.log
 grep "/backup.zip" access.log
@@ -54,6 +57,7 @@ grep "/.env" access.log
 
 ![ステップ４](images/4-1.png)
 ![ステップ４](images/4-2.png)
+![ステップ４](images/log_detective_review2.png)
 
 ### 質問４−２：怪しいアクセスをしている IP アドレスと、そのユーザーエージェントを答えてください。なぜ怪しいと思ったのかも答えてください
 - 怪しいアクセスをしているIPアドレスは"198.51.100.23"で、そのユーザーエージェントは"curl/8.5.0"です。
@@ -76,6 +80,8 @@ ls access.log no_such.log
 1s access.1og no_such.1og > ok.txt 2> error.txt
 
 ls access.log no_such.log > all.txt 2>&1
+
+ls access.log no_such.log 2> /dev/null
 
 grep -r "TREASURE" /etc
 grep -r "TREASURE" /etc 2>/dev/null
@@ -100,7 +106,8 @@ grep -r "TREASURE" /etc 2>/dev/null
 - “2>&1”：標準エラー（2）を標準出力(&1)でリダイレクトする意味です。
 
 ### 質問８−３：/dev/null とは何で、どういう時に使われますか
-- そのパスに送信される全てのデータを消滅させます。データを削除する時に使います。
+- /dev/nullはもらう全てのデータを捨てる特殊な仮想デバイスファイルです。
+- ステップ7-4ではエラーメセージを捨てるために使いました。
 
 ### 質問８−４：パイプライン | とは何ですか。パイプラインを使うと何が嬉しいのですか
 - 前のコマンドの標準出力を後ろの標準入力に渡す機能です。ファイルから目的のキーワードだけを抽出する時に使います。
@@ -109,3 +116,10 @@ grep -r "TREASURE" /etc 2>/dev/null
 - ユーザーのアクセスが少ない時間帯の午前2時に、攻撃をもらいました。
 外部から管理者ファイルにアクセスを試みして、成功しました。
 パスワードが保存しているファイルにアクセスし、情報流出の可能性があります。
+---
+- レビュー後の追加です。
+- 10月3日14時から14時29分の間に、注文処理の部分で80件のエラーが発生し、その間、注文することができませんでした。
+また、外部から午前2時から午前2時20分の間に、1201回のログイン試行がありました。
+その中で一回は、外部からのログインに成功しました。
+ユーザーの情報をエクスポートするファイル(/admin/users/export)にエクセスしたことを確認しました。
+この確認から、ユーザーの情報が外部に流出した可能性が高いです。
